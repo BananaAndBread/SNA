@@ -1,0 +1,53 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Flask_Chat_App</title>
+  </head>
+  <body>
+
+    <h3 style='color: #ccc;font-size: 30px;'>No messages yet... : (</h3>
+    <div class="message_holder"></div>
+
+    <form method="POST">
+      <input type="text" class="username" placeholder="User Name"/>
+      <input type="text" class="message" placeholder="Message"/>
+      <input type="submit"/>
+    </form>
+    <h4>The Shortest Usage Tutorial with examples:<br></h4>
+
+    <IMG SRC="https://media.tenor.com/images/502a92e4c70ba174f18f31d0dff1b1c7/tenor.gif" style="width:200px;height:200px;">
+    <IMG SRC="https://i.pinimg.com/originals/e5/8c/df/e58cdfdc496b880c8ff721d441adbe08.gif" style="width:200px;height:200px;">
+    <p></p>
+    <audio src="http://yuletidetunes.com/uploads/audio/Rasputin%20-%20Boney%20M.mp3" controls>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_name = $( 'input.username' ).val()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+        }
+      })
+    </script>
+
+  </body>
+
